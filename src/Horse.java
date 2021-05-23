@@ -34,6 +34,7 @@ public class Horse {
 	public int getCol() {
 		return c;
 	}
+	
 	public void setCoordinate(int x, int y) {
 		r=x;
 		c=y;
