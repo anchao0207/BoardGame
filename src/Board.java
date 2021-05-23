@@ -100,8 +100,8 @@ public class Board extends JPanel{
 					board[r][c]=null;
 				}
 				if((((c<7&&c>0)||(c>8&&c<15))&&r==6)||(c==8&&r==0)) {
-					if(board[r][c-1] instanceof Horse) {
-						if(board[r][c-1].getColor()!=Color.RED)
+					if(board[r][c-1] instanceof Horse) 
+						if(board[r][c-1].getColor()!=Color.RED) {
 							System.out.println(board[r][c-1]+" have been kicked at ("+r+", "+(c-1)+")");
 							if(board[r][c-1].getColor()==Color.GREEN) {
 								JeuDesPetitsChevaux.g.add(board[r][c-1]);

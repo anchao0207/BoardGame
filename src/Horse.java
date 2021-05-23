@@ -4,9 +4,11 @@ public class Horse {
 	private Color color;
 	private int r;
 	private int c;
+	private int id;
 	
-	public Horse(Color color) {
+	public Horse(Color color, int id) {
 		this.color=color;
+		this.id=id;
 		if(this.color==Color.RED) {
 			this.r=0;
 			this.c=6;
@@ -42,13 +44,13 @@ public class Horse {
 	
 	public String toString() {
 		if(this.color==Color.RED)
-			return "R";
+			return "R"+id;
 		if(this.color==Color.GREEN)
-			return "G";
+			return "G"+id;
 		if(this.color==Color.BLUE)
-			return "B";
+			return "B"+id;
 		if(this.color==Color.YELLOW)
-			return "Y";
+			return "Y"+id;
 		throw new IllegalStateException("Should not be possible");
 	}
 }

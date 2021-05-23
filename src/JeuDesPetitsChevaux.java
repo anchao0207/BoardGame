@@ -4,6 +4,7 @@ import java.util.Queue;
 import java.util.Random;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class JeuDesPetitsChevaux extends JFrame{
 	private Board board = new Board();
@@ -18,24 +19,26 @@ public class JeuDesPetitsChevaux extends JFrame{
 	private int dice1;
 	private int dice2;
 	private int turn;
+	private Horse horse;
+	private int step;
 	
 	public JeuDesPetitsChevaux() {
-		Horse r1 = new Horse(Color.RED);
-		Horse r2 = new Horse(Color.RED);
-		Horse r3 = new Horse(Color.RED);
-		Horse r4 = new Horse(Color.RED);
-		Horse g1 = new Horse(Color.GREEN);
-		Horse g2 = new Horse(Color.GREEN);
-		Horse g3 = new Horse(Color.GREEN);
-		Horse g4 = new Horse(Color.GREEN);
-		Horse b1 = new Horse(Color.BLUE);
-		Horse b2 = new Horse(Color.BLUE);
-		Horse b3 = new Horse(Color.BLUE);
-		Horse b4 = new Horse(Color.BLUE);
-		Horse y1 = new Horse(Color.YELLOW);
-		Horse y2 = new Horse(Color.YELLOW);
-		Horse y3 = new Horse(Color.YELLOW);
-		Horse y4 = new Horse(Color.YELLOW);
+		Horse r1 = new Horse(Color.RED,1);
+		Horse r2 = new Horse(Color.RED,2);
+		Horse r3 = new Horse(Color.RED,3);
+		Horse r4 = new Horse(Color.RED,4);
+		Horse g1 = new Horse(Color.GREEN,1);
+		Horse g2 = new Horse(Color.GREEN,2);
+		Horse g3 = new Horse(Color.GREEN,3);
+		Horse g4 = new Horse(Color.GREEN,4);
+		Horse b1 = new Horse(Color.BLUE,1);
+		Horse b2 = new Horse(Color.BLUE,2);
+		Horse b3 = new Horse(Color.BLUE,3);
+		Horse b4 = new Horse(Color.BLUE,4);
+		Horse y1 = new Horse(Color.YELLOW,1);
+		Horse y2 = new Horse(Color.YELLOW,2);
+		Horse y3 = new Horse(Color.YELLOW,3);
+		Horse y4 = new Horse(Color.YELLOW,4);
 		r.add(r1);
 		r.add(r2);
 		r.add(r3);
@@ -59,251 +62,387 @@ public class JeuDesPetitsChevaux extends JFrame{
 			if(getTurn()==Color.RED) {
 				rollDice();
 				if(dice1==dice2) {
-					if((r.size()>0&&(board.getHorse(0, 6) instanceof Horse)&&board.getHorse(0, 6).getColor()==Color.RED)||r.size()==0) {
-						//choose 1 horse from R to move
-						for(Horse h:R) {
-							if(h.getRow()<7&&h.getRow()>0&&h.getCol()==7) {
-								if(!board.moveInStack(h, dice1, dice2))
-									continue;
-								else 
-									break;
-							}
-							if(!board.move(h,(dice1+dice2))) 
-								continue;
-							break;
-						}
-					}
-					if(r.size()>0) {
-						if(board.getHorse(0, 6)==null) {
-							board.add(r.remove());
-							R.add(board.getHorse(0, 6));
+					if(r.size()>0&&(board.getHorse(0, 6) instanceof Horse)){
+						if(board.getHorse(0, 6).getColor()==Color.RED) {
+							System.out.println("Can't spawn horse!");
 						}
 						if(board.getHorse(0, 6).getColor()==Color.GREEN) {
 							G.remove(board.getHorse(0, 6));
 							g.add(board.getHorse(0, 6));
 							board.add(r.remove());
 							R.add(board.getHorse(0, 6));
+							System.out.println(board);
+							continue;
 						}
 						if(board.getHorse(0, 6).getColor()==Color.BLUE) {
 							B.remove(board.getHorse(0, 6));
 							b.add(board.getHorse(0, 6));
 							board.add(r.remove());
 							R.add(board.getHorse(0, 6));
+							System.out.println(board);
+							continue;
 						}
 						if(board.getHorse(0, 6).getColor()==Color.YELLOW) {
 							Y.remove(board.getHorse(0, 6));
 							y.add(board.getHorse(0, 6));
 							board.add(r.remove());
 							R.add(board.getHorse(0, 6));
+							System.out.println(board);
+							continue;
+						}
+					} else if(r.size()>0) {
+						board.add(r.remove());
+						R.add(board.getHorse(0, 6));
+						System.out.println(board);
+						continue;
+					}
+					if(r.size()==0||((board.getHorse(0, 6) instanceof Horse))&&board.getHorse(0, 6).getColor()==Color.RED) {
+						
+						Horse[] horseOptions = new Horse[4];
+						int i=0;
+						for(Horse h:R) {
+							horseOptions[i]=h;
+							i++;
+						}
+						Horse h = (Horse) JOptionPane.showInputDialog(null,
+								"Which Horse?", "Horse",
+								JOptionPane.QUESTION_MESSAGE, null, horseOptions, horseOptions[0]);
+						if(h==null) {
+							System.exit(0);
+						} else {
+							horse = h;
 						}
 						
+						if(horse.getRow()<7&&h.getRow()>0&&horse.getCol()==7) {
+							board.moveInStack(horse, dice1, dice2);
+						} else {
+							String[] moveOptions = {""+dice1,""+(dice1+dice2)};
+							String x = (String) JOptionPane.showInputDialog(null,
+									"How Many Moves? ("+dice1+" or "+(dice1+dice2)+")", "Move",
+									JOptionPane.QUESTION_MESSAGE, null, moveOptions, moveOptions[0]);
+							if (x == null) {
+								System.exit(0);
+							} else {
+								step = Integer.parseInt(x);
+							}
+							
+							
+							board.move(horse,step);
+						}	
 					}
-					
 					turn--;
 				}
 				if(dice1!=dice2) {
-					//choose 1 horse from R to move
+					Horse[] horseOptions = new Horse[4];
+					int i=0;
 					for(Horse h:R) {
-						if(h.getRow()>0&&h.getRow()<7&&h.getCol()==7) {
-							if(board.moveInStack(h, dice1, dice2))
-								break;
-							else
-								continue;
-						}
-						if(!board.move(h,(dice1+dice2))) {
-							continue;
-						} else
-							break;
+						horseOptions[i]=h;
+						i++;
 					}
+					Horse h = (Horse) JOptionPane.showInputDialog(null,
+							"Which Horse?", "Horse",
+							JOptionPane.QUESTION_MESSAGE, null, horseOptions, horseOptions[0]);
+					if(h==null) {
+						turn++;
+						System.out.println(board);
+						continue;
+					} else {
+						horse = h;
+					}
+						if(horse.getRow()>0&&h.getRow()<7&&h.getCol()==7) {
+							board.moveInStack(horse, dice1, dice2);
+						} else
+							board.move(horse,(dice1+dice2));
 				}
 			}
 			else if(getTurn()==Color.GREEN) {
-					rollDice();
-					if(dice1==dice2) {
-						if((g.size()>0&&(board.getHorse(8, 0) instanceof Horse)&&board.getHorse(8, 0).getColor()==Color.GREEN)||g.size()==0) {
-							//choose 1 horse from R to move
-							for(Horse h:G) {
-								if(h.getRow()==7&&h.getCol()<7&&h.getCol()>0) {
-									if(board.moveInStack(h, dice1, dice2))
-										break;
-									else
-										continue;
-								}
-								if(!board.move(h,(dice1+dice2))) {
-									continue;
-								} else
-									break;
-							}
+				rollDice();
+				if(dice1==dice2) {
+					if(g.size()>0&&(board.getHorse(8, 0) instanceof Horse)){
+						if(board.getHorse(8, 0).getColor()==Color.GREEN) {
+							System.out.println("Can't spawn horse!");
 						}
-						if(g.size()>0) {
-							if(board.getHorse(8, 0)==null) {
-								board.add(g.remove());
-								G.add(board.getHorse(8, 0));
-							}
-							if(board.getHorse(8, 0).getColor()==Color.RED) {
-								R.remove(board.getHorse(8, 0));
-								r.add(board.getHorse(8, 0));
-								board.add(g.remove());
-								G.add(board.getHorse(8, 0));
-							}
-							if(board.getHorse(8, 0).getColor()==Color.BLUE) {
-								B.remove(board.getHorse(8, 0));
-								b.add(board.getHorse(8, 0));
-								board.add(g.remove());
-								G.add(board.getHorse(8, 0));
-							}
-							if(board.getHorse(8, 0).getColor()==Color.YELLOW) {
-								Y.remove(board.getHorse(8, 0));
-								y.add(board.getHorse(8, 0));
-								board.add(g.remove());
-								G.add(board.getHorse(8, 0));
-							}
-							
+						if(board.getHorse(8, 0).getColor()==Color.RED) {
+							R.remove(board.getHorse(8, 0));
+							r.add(board.getHorse(8, 0));
+							board.add(g.remove());
+							G.add(board.getHorse(8, 0));
+							System.out.println(board);
+							continue;
+						}
+						if(board.getHorse(8, 0).getColor()==Color.BLUE) {
+							B.remove(board.getHorse(8, 0));
+							b.add(board.getHorse(8, 0));
+							board.add(g.remove());
+							G.add(board.getHorse(8, 0));
+							System.out.println(board);
+							continue;
+						}
+						if(board.getHorse(8, 0).getColor()==Color.YELLOW) {
+							Y.remove(board.getHorse(8, 0));
+							y.add(board.getHorse(8, 0));
+							board.add(g.remove());
+							G.add(board.getHorse(8, 0));
+							System.out.println(board);
+							continue;
+						}
+					} else if(g.size()>0) {
+						board.add(g.remove());
+						G.add(board.getHorse(8, 0));
+						System.out.println(board);
+						continue;
+					}
+					if(g.size()==0||((board.getHorse(8, 0) instanceof Horse))&&board.getHorse(8, 0).getColor()==Color.GREEN) {
+						
+						Horse[] horseOptions = new Horse[4];
+						int i=0;
+						for(Horse h:G) {
+							horseOptions[i]=h;
+							i++;
+						}
+						Horse h = (Horse) JOptionPane.showInputDialog(null,
+								"Which Horse?", "Horse",
+								JOptionPane.QUESTION_MESSAGE, null, horseOptions, horseOptions[0]);
+						if(h==null) {
+							System.exit(0);
+						} else {
+							horse = h;
 						}
 						
-						turn--;
-					}
-					if(dice1!=dice2) {
-							//choose 1 horse from R to move
-						for(Horse h:G) {
-							if(h.getRow()==7&&h.getCol()<7&&h.getCol()>0) {
-								if(board.moveInStack(h, dice1, dice2))
-									break;
-								else
-									continue;
+						if(horse.getCol()<7&&h.getCol()>0&&horse.getRow()==7) {
+							board.moveInStack(horse, dice1, dice2);
+						} else {
+							String[] moveOptions = {""+dice1,""+(dice1+dice2)};
+							String x = (String) JOptionPane.showInputDialog(null,
+									"How Many Moves? ("+dice1+" or "+(dice1+dice2)+")", "Move",
+									JOptionPane.QUESTION_MESSAGE, null, moveOptions, moveOptions[0]);
+							if (x == null) {
+								System.exit(0);
+							} else {
+								step = Integer.parseInt(x);
 							}
-							if(!board.move(h,(dice1+dice2))) {
-								continue;
-							} else
-								break;
-						}
+							
+							
+							board.move(horse,step);
+						}	
 					}
+					turn--;
+				}
+				if(dice1!=dice2) {
+					Horse[] horseOptions = new Horse[4];
+					int i=0;
+					for(Horse h:G) {
+						horseOptions[i]=h;
+						i++;
+					}
+					Horse h = (Horse) JOptionPane.showInputDialog(null,
+							"Which Horse?", "Horse",
+							JOptionPane.QUESTION_MESSAGE, null, horseOptions, horseOptions[0]);
+					if(h==null) {
+						turn++;
+						System.out.println(board);
+						continue;
+					} else {
+						horse = h;
+					}
+						if(horse.getCol()>0&&h.getCol()<7&&h.getRow()==7) {
+							board.moveInStack(horse, dice1, dice2);
+						} else
+							board.move(horse,(dice1+dice2));
+				}
 			}
 			else if(getTurn()==Color.BLUE) {
-					rollDice();
-					if(dice1==dice2) {
-						if((b.size()>0&&(board.getHorse(14, 8) instanceof Horse)&&board.getHorse(14, 8).getColor()==Color.BLUE)||b.size()==0) {
-							//choose 1 horse from B to move
-							for(Horse h:B) {
-								if(h.getRow()>7&&h.getRow()<14&&h.getCol()==7) {
-									board.moveInStack(h, dice1, dice2);
-									break;
-								}
-								if(!board.move(h,(dice1+dice2))) {
-									continue;
-								} else
-									break;
-							}
+				rollDice();
+				if(dice1==dice2) {
+					if(b.size()>0&&(board.getHorse(14, 8) instanceof Horse)){
+						if(board.getHorse(14, 8).getColor()==Color.BLUE) {
+							System.out.println("Can't spawn horse!");
 						}
-						if(b.size()>0) {
-							if(board.getHorse(14, 8)==null) {
-								board.add(b.remove());
-								B.add(board.getHorse(14, 8));
-							}
-							if(board.getHorse(14, 8).getColor()==Color.RED) {
-								R.remove(board.getHorse(14, 8));
-								r.add(board.getHorse(14, 8));
-								board.add(b.remove());
-								B.add(board.getHorse(14, 8));
-							}
-							if(board.getHorse(14, 8).getColor()==Color.GREEN) {
-								G.remove(board.getHorse(14, 8));
-								g.add(board.getHorse(14, 8));
-								board.add(b.remove());
-								B.add(board.getHorse(14, 8));
-							}
-							if(board.getHorse(14, 8).getColor()==Color.YELLOW) {
-								Y.remove(board.getHorse(14, 8));
-								y.add(board.getHorse(14, 8));
-								board.add(g.remove());
-								B.add(board.getHorse(14, 8));
+						if(board.getHorse(14, 8).getColor()==Color.GREEN) {
+							G.remove(board.getHorse(14, 8));
+							g.add(board.getHorse(14, 8));
+							board.add(b.remove());
+							B.add(board.getHorse(14, 8));
+							System.out.println(board);
+							continue;
+						}
+						if(board.getHorse(14, 8).getColor()==Color.RED) {
+							R.remove(board.getHorse(14, 8));
+							r.add(board.getHorse(14, 8));
+							board.add(b.remove());
+							B.add(board.getHorse(14, 8));
+							System.out.println(board);
+							continue;
+						}
+						if(board.getHorse(14, 8).getColor()==Color.YELLOW) {
+							Y.remove(board.getHorse(14, 8));
+							y.add(board.getHorse(14, 8));
+							board.add(b.remove());
+							B.add(board.getHorse(14, 8));
+							System.out.println(board);
+							continue;
+						}
+					} else if(b.size()>0) {
+						board.add(b.remove());
+						B.add(board.getHorse(14, 8));
+						System.out.println(board);
+						continue;
+					}
+					if(b.size()==0||((board.getHorse(14, 8) instanceof Horse))&&board.getHorse(14, 8).getColor()==Color.BLUE) {
+						
+						Horse[] horseOptions = new Horse[4];
+						int i=0;
+						for(Horse h:B) {
+							horseOptions[i]=h;
+							i++;
+						}
+						Horse h = (Horse) JOptionPane.showInputDialog(null,
+								"Which Horse?", "Horse",
+								JOptionPane.QUESTION_MESSAGE, null, horseOptions, horseOptions[0]);
+						if(h==null) {
+							System.exit(0);
+						} else {
+							horse = h;
+						}
+						
+						if(horse.getRow()>7&&h.getRow()<14&&horse.getCol()==7) {
+							board.moveInStack(horse, dice1, dice2);
+						} else {
+							String[] moveOptions = {""+dice1,""+(dice1+dice2)};
+							String x = (String) JOptionPane.showInputDialog(null,
+									"How Many Moves? ("+dice1+" or "+(dice1+dice2)+")", "Move",
+									JOptionPane.QUESTION_MESSAGE, null, moveOptions, moveOptions[0]);
+							if (x == null) {
+								System.exit(0);
+							} else {
+								step = Integer.parseInt(x);
 							}
 							
-						}
-						
-						turn--;
+							
+							board.move(horse,step);
+						}	
 					}
-					if(dice1!=dice2) {
-							//choose 1 horse from B to move
-						for(Horse h:B) {
-							if(h.getRow()>7&&h.getRow()<14&&h.getCol()==7) {
-								if(board.moveInStack(h, dice1, dice2))
-									break;
-								else
-									continue;
-							}
-							if(!board.move(h,(dice1+dice2))) {
-								continue;
-							} else
-								break;
-						}
+					turn--;
+				}
+				if(dice1!=dice2) {
+					Horse[] horseOptions = new Horse[4];
+					int i=0;
+					for(Horse h:B) {
+						horseOptions[i]=h;
+						i++;
 					}
+					Horse h = (Horse) JOptionPane.showInputDialog(null,
+							"Which Horse?", "Horse",
+							JOptionPane.QUESTION_MESSAGE, null, horseOptions, horseOptions[0]);
+					if(h==null) {
+						turn++;
+						System.out.println(board);
+						continue;
+					} else {
+						horse = h;
+					}
+						if(horse.getRow()>7&&h.getRow()<14&&h.getCol()==7) {
+							board.moveInStack(horse, dice1, dice2);
+						} else
+							board.move(horse,(dice1+dice2));
+				}
 			}
 			else if(getTurn()==Color.YELLOW) {
-					rollDice();
-					if(dice1==dice2) {
-						if((y.size()>0&&(board.getHorse(6,14) instanceof Horse)&&board.getHorse(6, 14).getColor()==Color.YELLOW)||y.size()==0) {
-							//choose 1 horse from R to move
-							for(Horse h:Y) {
-								if(h.getCol()>7&&h.getCol()<14&&h.getRow()==7) {
-									if(board.moveInStack(h, dice1, dice2))
-										break;
-									else
-										continue;
-								}
-								if(!board.move(h,(dice1+dice2))) {
-									continue;
-								} else
-									break;
-							}
+				rollDice();
+				if(dice1==dice2) {
+					if(y.size()>0&&(board.getHorse(6, 14) instanceof Horse)){
+						if(board.getHorse(6, 14).getColor()==Color.YELLOW) {
+							System.out.println("Can't spawn horse!");
 						}
-						if(y.size()>0) {
-							if(board.getHorse(6, 14)==null) {
-								board.add(y.remove());
-								Y.add(board.getHorse(6, 14));
-							}
-							if(board.getHorse(6, 14).getColor()==Color.RED) {
-								R.remove(board.getHorse(6, 14));
-								r.add(board.getHorse(6, 14));
-								board.add(y.remove());
-								Y.add(board.getHorse(6, 14));
-							}
-							if(board.getHorse(6, 14).getColor()==Color.BLUE) {
-								B.remove(board.getHorse(6, 14));
-								b.add(board.getHorse(6, 14));
-								board.add(y.remove());
-								Y.add(board.getHorse(6, 14));
-							}
-							if(board.getHorse(6, 14).getColor()==Color.GREEN) {
-								G.remove(board.getHorse(6, 14));
-								g.add(board.getHorse(6, 14));
-								board.add(y.remove());
-								Y.add(board.getHorse(6, 14));
-							}
-							if(board.getHorse(6, 14)==null) {
-								board.add(y.remove());
-								Y.add(board.getHorse(6, 14));
-							}
+						if(board.getHorse(6, 14).getColor()==Color.RED) {
+							R.remove(board.getHorse(6, 14));
+							r.add(board.getHorse(6, 14));
+							board.add(y.remove());
+							Y.add(board.getHorse(6, 14));
+							System.out.println(board);
+							continue;
+						}
+						if(board.getHorse(6, 14).getColor()==Color.BLUE) {
+							B.remove(board.getHorse(6, 14));
+							b.add(board.getHorse(6, 14));
+							board.add(y.remove());
+							Y.add(board.getHorse(6, 14));
+							System.out.println(board);
+							continue;
+						}
+						if(board.getHorse(6, 14).getColor()==Color.GREEN) {
+							G.remove(board.getHorse(6, 14));
+							g.add(board.getHorse(6, 14));
+							board.add(y.remove());
+							Y.add(board.getHorse(6, 14));
+							System.out.println(board);
+							continue;
+						}
+					} else if(y.size()>0) {
+						board.add(y.remove());
+						Y.add(board.getHorse(6, 14));
+						System.out.println(board);
+						continue;
+					}
+					if(y.size()==0||((board.getHorse(6, 14) instanceof Horse))&&board.getHorse(6, 14).getColor()==Color.YELLOW) {
+						
+						Horse[] horseOptions = new Horse[4];
+						int i=0;
+						for(Horse h:Y) {
+							horseOptions[i]=h;
+							i++;
+						}
+						Horse h = (Horse) JOptionPane.showInputDialog(null,
+								"Which Horse?", "Horse",
+								JOptionPane.QUESTION_MESSAGE, null, horseOptions, horseOptions[0]);
+						if(h==null) {
+							System.exit(0);
+						} else {
+							horse = h;
 						}
 						
-						turn--;
-					}
-					if(dice1!=dice2) {
-							//choose 1 horse from R to move
-						for(Horse h:Y) {
-							if(h.getCol()>7&&h.getCol()<14&&h.getRow()==7) {
-								if(board.moveInStack(h, dice1, dice2))
-									break;
-								else
-									continue;
+						if(horse.getCol()<14&&h.getCol()>7&&horse.getRow()==7) {
+							board.moveInStack(horse, dice1, dice2);
+						} else {
+							String[] moveOptions = {""+dice1,""+(dice1+dice2)};
+							String x = (String) JOptionPane.showInputDialog(null,
+									"How Many Moves? ("+dice1+" or "+(dice1+dice2)+")", "Move",
+									JOptionPane.QUESTION_MESSAGE, null, moveOptions, moveOptions[0]);
+							if (x == null) {
+								System.exit(0);
+							} else {
+								step = Integer.parseInt(x);
 							}
-							if(!board.move(h,(dice1+dice2))) {
-								continue;
-							} else
-								break;
-						}
+							
+							
+							board.move(horse,step);
+						}	
 					}
+					turn--;
 				}
+				if(dice1!=dice2) {
+					Horse[] horseOptions = new Horse[4];
+					int i=0;
+					for(Horse h:Y) {
+						horseOptions[i]=h;
+						i++;
+					}
+					Horse h = (Horse) JOptionPane.showInputDialog(null,
+							"Which Horse?", "Horse",
+							JOptionPane.QUESTION_MESSAGE, null, horseOptions, horseOptions[0]);
+					if(h==null) {
+						turn++;
+						System.out.println(board);
+						continue;
+					} else {
+						horse = h;
+					}
+						if(horse.getCol()>7&&h.getCol()<14&&h.getRow()==7) {
+							board.moveInStack(horse, dice1, dice2);
+						} else
+							board.move(horse,(dice1+dice2));
+				}
+			}
 			System.out.println(board);
 			turn++;
 		}

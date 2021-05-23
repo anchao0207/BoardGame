@@ -7,8 +7,9 @@ public class Main {
 //		board.add(new Horse(Color.RED));
 //		board.add(new Horse(Color.GREEN));
 //		board.add(new Horse(Color.BLUE));
-//		Horse y1 = new Horse(Color.BLUE);
+//		Horse y1 = new Horse(Color.RED);
 //		board.add(y1);
+//		board.move(y1,6);
 //		board.move(y1,1);
 //		board.move(h1, 6);
 //		board.move(h1,6);
