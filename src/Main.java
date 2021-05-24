@@ -22,7 +22,11 @@ public class Main {
 //		board.moveInStack(h1, 6, 6);
 //		System.out.println(board.moveInStack(h1, 6, 6));
 //		System.out.println(board);
+		System.out.println("HELLOOOOOOOO\n\n\n");
 		JeuDesPetitsChevaux j =new JeuDesPetitsChevaux();
+		j.setVisible(true);
+		j.repaint();
+		j.play();
 	}
 
 }

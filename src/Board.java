@@ -3,7 +3,7 @@ import java.util.Queue;
 
 import javax.swing.JPanel;
 
-public class Board extends JPanel{
+public class Board {
 	private static Horse[][] board = new Horse[15][15];
 //	public int die1;
 //	public int die2;
@@ -18,6 +18,10 @@ public class Board extends JPanel{
 	public Board() {
 		
 	}
+	
+//	public void makeMove(Color player, int d1, int d2, int r, int c) {
+//		// put all the logic for a particular player to make a move into here
+//	}
 	
 	public void add(Horse horse) {
 		if(horse.getColor()==Color.RED) {

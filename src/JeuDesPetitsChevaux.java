@@ -1,3 +1,8 @@
+//import java.awt.Color;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -5,6 +10,7 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 public class JeuDesPetitsChevaux extends JFrame{
 	private Board board = new Board();
@@ -21,6 +27,68 @@ public class JeuDesPetitsChevaux extends JFrame{
 	private int turn;
 	private Horse horse;
 	private int step;
+	
+	// to make warning go away
+	private static final long serialVersionUID = 1L;
+	
+	// GUI stuff
+	protected final int MARGIN_SIZE = 5;
+    protected final int DOUBLE_MARGIN_SIZE = MARGIN_SIZE*2;
+    protected int squareSize = 25;
+    private int numRows = 15;
+    private int numCols = 15;
+    
+    private int width = DOUBLE_MARGIN_SIZE + squareSize * numCols;    		
+    private int height = DOUBLE_MARGIN_SIZE + squareSize * numRows;    		
+    
+    private JPanel canvas;
+    
+    private void drawHorse(int r, int c) {
+    	
+    }
+    
+    private void drawGrid(Graphics2D g) {
+    	// TODO: refactor the copy-paste
+    	int mid = numRows/2;
+        for (int r = mid-1; r <= mid+1; r++) {
+            for (int c = 0; c < numCols; c++) {
+            	int x = c * squareSize + MARGIN_SIZE;
+            	int y = r * squareSize + MARGIN_SIZE;
+            	
+                // TODO: draw horses from the board
+            	Horse horse = board.getHorse(r, c);
+            	if (horse != null) {
+            		g.setColor(horse.getColor().toColor());
+            		g.fillOval(x, y, squareSize, squareSize);
+            	}
+            	
+
+                g.setColor(java.awt.Color.BLACK);
+                g.drawRect(x, y, squareSize, squareSize); 
+            }
+        }
+        
+        for (int r = 0; r < numRows; r++) {
+            for (int c = mid-1; c <= mid+1; c++) {
+            	int x = c * squareSize + MARGIN_SIZE;
+            	int y = r * squareSize + MARGIN_SIZE;
+            	
+                // TODO: draw horses from the board
+            	Horse horse = board.getHorse(r, c);
+            	if (horse != null) {
+            		g.setColor(horse.getColor().toColor());
+            		g.fillOval(x, y, squareSize, squareSize);
+            	}
+            	
+
+                g.setColor(java.awt.Color.BLACK);
+                g.drawRect(x, y, squareSize, squareSize); 
+            }
+        }
+        
+        
+        
+    }
 	
 	public JeuDesPetitsChevaux() {
 		Horse r1 = new Horse(Color.RED,1);
@@ -56,6 +124,58 @@ public class JeuDesPetitsChevaux extends JFrame{
 		y.add(y3);
 		y.add(y4);
 		turn =0;
+		
+		JFrame frame = this;
+		
+		canvas = new JPanel() {
+			/* (non-Javadoc)
+             * @see javax.swing.JComponent#getMinimumSize()
+             */
+            public Dimension getMinimumSize() {
+                return new Dimension(width, height);
+            }
+            
+            /* (non-Javadoc)
+             * @see javax.swing.JComponent#getMaximumSize()
+             */
+            public Dimension getMaximumSize() {
+                return new Dimension(width, height);
+            }
+            
+            /* (non-Javadoc)
+             * @see javax.swing.JComponent#getPreferredSize()
+             */
+            public Dimension getPreferredSize() {
+                return new Dimension(width, height);
+            }
+            
+            /* (non-Javadoc)
+             * @see java.awt.Component#isFocusable()
+             */
+            public boolean isFocusable() {
+                return true;
+            }
+
+			@Override
+        	public void paint(Graphics graphics) {
+        		Graphics2D g = (Graphics2D)graphics;
+
+        		drawGrid(g);
+
+        		//frame.setPreferredSize(new Dimension(numRows*squareSize + MARGIN_SIZE, numCols*squareSize + MARGIN_SIZE));
+        		setPreferredSize(new Dimension((numCols+2)*squareSize + 2*MARGIN_SIZE, (numRows+2)*squareSize + 2*MARGIN_SIZE));
+        		frame.pack();
+        	}
+		};
+		
+		this.getContentPane().add(canvas, BorderLayout.CENTER);
+        this.setResizable(false);
+        this.pack();
+        this.setLocation(100,100);
+        this.setFocusable(true);
+	}
+	
+	public void play() {
 		System.out.println(board);
 		while(!board.checkWin()) {
 			System.out.println("It's "+getTurn()+" turn!");
@@ -445,6 +565,7 @@ public class JeuDesPetitsChevaux extends JFrame{
 			}
 			System.out.println(board);
 			turn++;
+			canvas.repaint();
 		}
 		
 	}
