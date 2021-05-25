@@ -60,11 +60,17 @@ public class JeuDesPetitsChevaux extends JFrame{
             	if (horse != null) {
             		g.setColor(horse.getColor().toColor());
             		g.fillOval(x, y, squareSize, squareSize);
+            	} else {
+            		g.setColor(getBackground());
+            		g.fillOval(x, y, squareSize, squareSize);
             	}
-            	
-
-                g.setColor(java.awt.Color.BLACK);
-                g.drawRect(x, y, squareSize, squareSize); 
+            	if(((c>0&&c<7)||(c>7&&c<14))&&r==7) {
+            		g.setColor(java.awt.Color.BLACK);
+            		g.drawOval(x, y, squareSize, squareSize);
+            	} else {
+            		g.setColor(java.awt.Color.BLACK);
+                	g.drawRect(x, y, squareSize, squareSize); 
+            	}
             }
         }
         
@@ -78,11 +84,17 @@ public class JeuDesPetitsChevaux extends JFrame{
             	if (horse != null) {
             		g.setColor(horse.getColor().toColor());
             		g.fillOval(x, y, squareSize, squareSize);
+            	} else {
+            		g.setColor(getBackground());
+            		g.fillOval(x, y, squareSize, squareSize);
             	}
-            	
-
-                g.setColor(java.awt.Color.BLACK);
-                g.drawRect(x, y, squareSize, squareSize); 
+            	if(((r>0&&r<7)||(r>7&&r<14))&&c==7) {
+            		g.setColor(java.awt.Color.BLACK);
+            		g.drawOval(x, y, squareSize, squareSize);
+            	} else {
+            		g.setColor(java.awt.Color.BLACK);
+                	g.drawRect(x, y, squareSize, squareSize); 
+            	}
             }
         }
         
@@ -192,6 +204,7 @@ public class JeuDesPetitsChevaux extends JFrame{
 							board.add(r.remove());
 							R.add(board.getHorse(0, 6));
 							System.out.println(board);
+							canvas.repaint();
 							continue;
 						}
 						if(board.getHorse(0, 6).getColor()==Color.BLUE) {
@@ -200,6 +213,7 @@ public class JeuDesPetitsChevaux extends JFrame{
 							board.add(r.remove());
 							R.add(board.getHorse(0, 6));
 							System.out.println(board);
+							canvas.repaint();
 							continue;
 						}
 						if(board.getHorse(0, 6).getColor()==Color.YELLOW) {
@@ -208,17 +222,19 @@ public class JeuDesPetitsChevaux extends JFrame{
 							board.add(r.remove());
 							R.add(board.getHorse(0, 6));
 							System.out.println(board);
+							canvas.repaint();
 							continue;
 						}
 					} else if(r.size()>0) {
 						board.add(r.remove());
 						R.add(board.getHorse(0, 6));
 						System.out.println(board);
+						canvas.repaint();
 						continue;
 					}
 					if(r.size()==0||((board.getHorse(0, 6) instanceof Horse))&&board.getHorse(0, 6).getColor()==Color.RED) {
 						
-						Horse[] horseOptions = new Horse[4];
+						Horse[] horseOptions = new Horse[R.size()];
 						int i=0;
 						for(Horse h:R) {
 							horseOptions[i]=h;
@@ -235,6 +251,7 @@ public class JeuDesPetitsChevaux extends JFrame{
 						
 						if(horse.getRow()<7&&h.getRow()>0&&horse.getCol()==7) {
 							board.moveInStack(horse, dice1, dice2);
+							canvas.repaint();
 						} else {
 							String[] moveOptions = {""+dice1,""+(dice1+dice2)};
 							String x = (String) JOptionPane.showInputDialog(null,
@@ -248,12 +265,17 @@ public class JeuDesPetitsChevaux extends JFrame{
 							
 							
 							board.move(horse,step);
+							canvas.repaint();
 						}	
 					}
 					turn--;
 				}
 				if(dice1!=dice2) {
-					Horse[] horseOptions = new Horse[4];
+					if(R.size()==0) {
+						turn++;
+						continue;
+					}
+					Horse[] horseOptions = new Horse[R.size()];
 					int i=0;
 					for(Horse h:R) {
 						horseOptions[i]=h;
@@ -265,14 +287,17 @@ public class JeuDesPetitsChevaux extends JFrame{
 					if(h==null) {
 						turn++;
 						System.out.println(board);
+						canvas.repaint();
 						continue;
 					} else {
 						horse = h;
 					}
 						if(horse.getRow()>0&&h.getRow()<7&&h.getCol()==7) {
 							board.moveInStack(horse, dice1, dice2);
-						} else
+						} else {
 							board.move(horse,(dice1+dice2));
+							canvas.repaint();
+						}
 				}
 			}
 			else if(getTurn()==Color.GREEN) {
@@ -288,6 +313,7 @@ public class JeuDesPetitsChevaux extends JFrame{
 							board.add(g.remove());
 							G.add(board.getHorse(8, 0));
 							System.out.println(board);
+							canvas.repaint();
 							continue;
 						}
 						if(board.getHorse(8, 0).getColor()==Color.BLUE) {
@@ -296,6 +322,7 @@ public class JeuDesPetitsChevaux extends JFrame{
 							board.add(g.remove());
 							G.add(board.getHorse(8, 0));
 							System.out.println(board);
+							canvas.repaint();
 							continue;
 						}
 						if(board.getHorse(8, 0).getColor()==Color.YELLOW) {
@@ -304,17 +331,19 @@ public class JeuDesPetitsChevaux extends JFrame{
 							board.add(g.remove());
 							G.add(board.getHorse(8, 0));
 							System.out.println(board);
+							canvas.repaint();
 							continue;
 						}
 					} else if(g.size()>0) {
 						board.add(g.remove());
 						G.add(board.getHorse(8, 0));
 						System.out.println(board);
+						canvas.repaint();
 						continue;
 					}
 					if(g.size()==0||((board.getHorse(8, 0) instanceof Horse))&&board.getHorse(8, 0).getColor()==Color.GREEN) {
 						
-						Horse[] horseOptions = new Horse[4];
+						Horse[] horseOptions = new Horse[G.size()];
 						int i=0;
 						for(Horse h:G) {
 							horseOptions[i]=h;
@@ -331,6 +360,7 @@ public class JeuDesPetitsChevaux extends JFrame{
 						
 						if(horse.getCol()<7&&h.getCol()>0&&horse.getRow()==7) {
 							board.moveInStack(horse, dice1, dice2);
+							canvas.repaint();
 						} else {
 							String[] moveOptions = {""+dice1,""+(dice1+dice2)};
 							String x = (String) JOptionPane.showInputDialog(null,
@@ -344,12 +374,17 @@ public class JeuDesPetitsChevaux extends JFrame{
 							
 							
 							board.move(horse,step);
+							canvas.repaint();
 						}	
 					}
 					turn--;
 				}
 				if(dice1!=dice2) {
-					Horse[] horseOptions = new Horse[4];
+					if(G.size()==0) {
+						turn++;
+						continue;
+					}
+					Horse[] horseOptions = new Horse[G.size()];
 					int i=0;
 					for(Horse h:G) {
 						horseOptions[i]=h;
@@ -361,14 +396,17 @@ public class JeuDesPetitsChevaux extends JFrame{
 					if(h==null) {
 						turn++;
 						System.out.println(board);
+						canvas.repaint();
 						continue;
 					} else {
 						horse = h;
 					}
 						if(horse.getCol()>0&&h.getCol()<7&&h.getRow()==7) {
 							board.moveInStack(horse, dice1, dice2);
-						} else
+						} else {
 							board.move(horse,(dice1+dice2));
+							canvas.repaint();
+						}
 				}
 			}
 			else if(getTurn()==Color.BLUE) {
@@ -384,6 +422,7 @@ public class JeuDesPetitsChevaux extends JFrame{
 							board.add(b.remove());
 							B.add(board.getHorse(14, 8));
 							System.out.println(board);
+							canvas.repaint();
 							continue;
 						}
 						if(board.getHorse(14, 8).getColor()==Color.RED) {
@@ -392,6 +431,7 @@ public class JeuDesPetitsChevaux extends JFrame{
 							board.add(b.remove());
 							B.add(board.getHorse(14, 8));
 							System.out.println(board);
+							canvas.repaint();
 							continue;
 						}
 						if(board.getHorse(14, 8).getColor()==Color.YELLOW) {
@@ -400,17 +440,19 @@ public class JeuDesPetitsChevaux extends JFrame{
 							board.add(b.remove());
 							B.add(board.getHorse(14, 8));
 							System.out.println(board);
+							canvas.repaint();
 							continue;
 						}
 					} else if(b.size()>0) {
 						board.add(b.remove());
 						B.add(board.getHorse(14, 8));
 						System.out.println(board);
+						canvas.repaint();
 						continue;
 					}
 					if(b.size()==0||((board.getHorse(14, 8) instanceof Horse))&&board.getHorse(14, 8).getColor()==Color.BLUE) {
 						
-						Horse[] horseOptions = new Horse[4];
+						Horse[] horseOptions = new Horse[B.size()];
 						int i=0;
 						for(Horse h:B) {
 							horseOptions[i]=h;
@@ -427,6 +469,7 @@ public class JeuDesPetitsChevaux extends JFrame{
 						
 						if(horse.getRow()>7&&h.getRow()<14&&horse.getCol()==7) {
 							board.moveInStack(horse, dice1, dice2);
+							canvas.repaint();
 						} else {
 							String[] moveOptions = {""+dice1,""+(dice1+dice2)};
 							String x = (String) JOptionPane.showInputDialog(null,
@@ -440,12 +483,17 @@ public class JeuDesPetitsChevaux extends JFrame{
 							
 							
 							board.move(horse,step);
-						}	
+							canvas.repaint();
+						}
 					}
 					turn--;
 				}
 				if(dice1!=dice2) {
-					Horse[] horseOptions = new Horse[4];
+					if(B.size()==0) {
+						turn++;
+						continue;
+					}
+					Horse[] horseOptions = new Horse[B.size()];
 					int i=0;
 					for(Horse h:B) {
 						horseOptions[i]=h;
@@ -457,14 +505,17 @@ public class JeuDesPetitsChevaux extends JFrame{
 					if(h==null) {
 						turn++;
 						System.out.println(board);
+						canvas.repaint();
 						continue;
 					} else {
 						horse = h;
 					}
 						if(horse.getRow()>7&&h.getRow()<14&&h.getCol()==7) {
 							board.moveInStack(horse, dice1, dice2);
-						} else
+						} else {
 							board.move(horse,(dice1+dice2));
+							canvas.repaint();
+						}
 				}
 			}
 			else if(getTurn()==Color.YELLOW) {
@@ -480,6 +531,7 @@ public class JeuDesPetitsChevaux extends JFrame{
 							board.add(y.remove());
 							Y.add(board.getHorse(6, 14));
 							System.out.println(board);
+							canvas.repaint();
 							continue;
 						}
 						if(board.getHorse(6, 14).getColor()==Color.BLUE) {
@@ -488,6 +540,7 @@ public class JeuDesPetitsChevaux extends JFrame{
 							board.add(y.remove());
 							Y.add(board.getHorse(6, 14));
 							System.out.println(board);
+							canvas.repaint();
 							continue;
 						}
 						if(board.getHorse(6, 14).getColor()==Color.GREEN) {
@@ -496,17 +549,19 @@ public class JeuDesPetitsChevaux extends JFrame{
 							board.add(y.remove());
 							Y.add(board.getHorse(6, 14));
 							System.out.println(board);
+							canvas.repaint();
 							continue;
 						}
 					} else if(y.size()>0) {
 						board.add(y.remove());
 						Y.add(board.getHorse(6, 14));
 						System.out.println(board);
+						canvas.repaint();
 						continue;
 					}
 					if(y.size()==0||((board.getHorse(6, 14) instanceof Horse))&&board.getHorse(6, 14).getColor()==Color.YELLOW) {
 						
-						Horse[] horseOptions = new Horse[4];
+						Horse[] horseOptions = new Horse[Y.size()];
 						int i=0;
 						for(Horse h:Y) {
 							horseOptions[i]=h;
@@ -523,6 +578,7 @@ public class JeuDesPetitsChevaux extends JFrame{
 						
 						if(horse.getCol()<14&&h.getCol()>7&&horse.getRow()==7) {
 							board.moveInStack(horse, dice1, dice2);
+							canvas.repaint();
 						} else {
 							String[] moveOptions = {""+dice1,""+(dice1+dice2)};
 							String x = (String) JOptionPane.showInputDialog(null,
@@ -536,12 +592,17 @@ public class JeuDesPetitsChevaux extends JFrame{
 							
 							
 							board.move(horse,step);
+							canvas.repaint();
 						}	
 					}
 					turn--;
 				}
 				if(dice1!=dice2) {
-					Horse[] horseOptions = new Horse[4];
+					if(Y.size()==0) {
+						turn++;
+						continue;
+					}
+					Horse[] horseOptions = new Horse[Y.size()];
 					int i=0;
 					for(Horse h:Y) {
 						horseOptions[i]=h;
@@ -553,14 +614,17 @@ public class JeuDesPetitsChevaux extends JFrame{
 					if(h==null) {
 						turn++;
 						System.out.println(board);
+						canvas.repaint();
 						continue;
 					} else {
 						horse = h;
 					}
 						if(horse.getCol()>7&&h.getCol()<14&&h.getRow()==7) {
 							board.moveInStack(horse, dice1, dice2);
-						} else
+						} else {
 							board.move(horse,(dice1+dice2));
+							canvas.repaint();
+						}
 				}
 			}
 			System.out.println(board);
@@ -590,7 +654,7 @@ public class JeuDesPetitsChevaux extends JFrame{
 	public int rollDice() {
 		Random roll = new Random();
 		dice1 = roll.nextInt(6)+1;
-		dice2 = roll.nextInt(6)+2;
+		dice2 = roll.nextInt(6)+1;
 		System.out.println("Rolled ("+dice1+" "+dice2+")");
 		return dice1+dice2;
 	}

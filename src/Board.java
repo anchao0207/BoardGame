@@ -76,20 +76,29 @@ public class Board {
 			int c=horse.getCol();
 			if(horse.getColor()==Color.RED) {
 				if((c==6&&((r<6)||(r>7&&r<14)))||(c==0&&r<8)||(c==7&&r<6)) {
-					if(board[r+1][c] instanceof Horse)
+					if(board[r+1][c] instanceof Horse) {
 						if(board[r+1][c].getColor()!=Color.RED) {
 							System.out.println(board[r+1][c]+" have been kicked at ("+(r+1)+", "+c+")");
 							if(board[r+1][c].getColor()==Color.GREEN) {
 								JeuDesPetitsChevaux.g.add(board[r+1][c]);
 								JeuDesPetitsChevaux.G.remove(board[r+1][c]);
+								board[r+1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r+1, c);
 							}
 							if(board[r+1][c].getColor()==Color.YELLOW) {
 								JeuDesPetitsChevaux.y.add(board[r+1][c]);
 								JeuDesPetitsChevaux.Y.remove(board[r+1][c]);
+								board[r+1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r+1, c);
 							}
 							if(board[r+1][c].getColor()==Color.BLUE) {
 								JeuDesPetitsChevaux.b.add(board[r+1][c]);
 								JeuDesPetitsChevaux.B.remove(board[r+1][c]);
+								board[r+1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r+1, c);
 							}
 						}
 						else {
@@ -99,53 +108,69 @@ public class Board {
 							horse.setCoordinate(Or, Oc);
 							return false;
 						}
-					board[r+1][c]=horse;
-					horse.setCoordinate(r+1, c);
-					board[r][c]=null;
+					} else
+					move(horse);
 				}
 				if((((c<7&&c>0)||(c>8&&c<15))&&r==6)||(c==8&&r==0)) {
-					if(board[r][c-1] instanceof Horse) 
+					if(board[r][c-1] instanceof Horse) {
 						if(board[r][c-1].getColor()!=Color.RED) {
 							System.out.println(board[r][c-1]+" have been kicked at ("+r+", "+(c-1)+")");
 							if(board[r][c-1].getColor()==Color.GREEN) {
 								JeuDesPetitsChevaux.g.add(board[r][c-1]);
 								JeuDesPetitsChevaux.G.remove(board[r][c-1]);
+								board[r][c-1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c-1);
 							}
 							if(board[r][c-1].getColor()==Color.YELLOW) {
 								JeuDesPetitsChevaux.y.add(board[r][c-1]);
 								JeuDesPetitsChevaux.Y.remove(board[r][c-1]);
+								board[r][c-1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c-1);
 							}
 							if(board[r][c-1].getColor()==Color.BLUE) {
 								JeuDesPetitsChevaux.b.add(board[r][c-1]);
 								JeuDesPetitsChevaux.B.remove(board[r][c-1]);
+								board[r][c-1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c-1);
 							}
-					} else {
+						} else {
 							System.out.println(horse+" can't move");
 							board[r][c]=null;
 							board[Or][Oc]=horse;
 							horse.setCoordinate(Or, Oc);
 							return false;
 						}
-					board[r][c-1]=horse;
-					horse.setCoordinate(r, c-1);
-					board[r][c]=null;
+					} else
+					move(horse);
 				}
 				
 				if(((c<6||(c>7&&c<14))&&r==8)||(r==14&&c<8)) {
-					if(board[r][c+1] instanceof Horse)
+					if(board[r][c+1] instanceof Horse) {
 						if(board[r][c+1].getColor()!=Color.RED) {
 							System.out.println(board[r][c+1]+" have been kicked at ("+r+", "+(c+1)+")");
 							if(board[r][c+1].getColor()==Color.GREEN) {
 								JeuDesPetitsChevaux.g.add(board[r][c+1]);
 								JeuDesPetitsChevaux.G.remove(board[r][c+1]);
+								board[r][c+1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c+1);
 							}
 							if(board[r][c+1].getColor()==Color.YELLOW) {
 								JeuDesPetitsChevaux.y.add(board[r][c+1]);
 								JeuDesPetitsChevaux.Y.remove(board[r][c+1]);
+								board[r][c+1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c+1);
 							}
 							if(board[r][c+1].getColor()==Color.BLUE) {
 								JeuDesPetitsChevaux.b.add(board[r][c+1]);
 								JeuDesPetitsChevaux.B.remove(board[r][c+1]);
+								board[r][c+1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c+1);
 							}
 						} else {
 							System.out.println(horse+" can't move");
@@ -154,25 +179,33 @@ public class Board {
 							horse.setCoordinate(Or, Oc);
 							return false;
 						}
-					board[r][c+1]=horse;
-					horse.setCoordinate(r, c+1);
-					board[r][c]=null;
+					} else
+						move(horse);
 				}
 				if((c==8&&((r<15&&r>8)||(r>0&&r<7)))||(c==14&&r>6)) {
-					if(board[r-1][c] instanceof Horse)
+					if(board[r-1][c] instanceof Horse) {
 						if(board[r-1][c].getColor()!=Color.RED) {
 							System.out.println(board[r-1][c]+" have been kicked at ("+(r-1)+", "+c+")");
 							if(board[r-1][c].getColor()==Color.GREEN) {
 								JeuDesPetitsChevaux.g.add(board[r-1][c]);
 								JeuDesPetitsChevaux.G.remove(board[r-1][c]);
+								board[r-1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r-1, c);
 							}
 							if(board[r-1][c].getColor()==Color.YELLOW) {
 								JeuDesPetitsChevaux.y.add(board[r-1][c]);
 								JeuDesPetitsChevaux.Y.remove(board[r-1][c]);
+								board[r-1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r-1, c);
 							}
 							if(board[r-1][c].getColor()==Color.BLUE) {
 								JeuDesPetitsChevaux.b.add(board[r-1][c]);
 								JeuDesPetitsChevaux.B.remove(board[r-1][c]);
+								board[r-1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r-1, c);
 							}
 						} else {
 							System.out.println(horse+" can't move");
@@ -181,27 +214,35 @@ public class Board {
 							horse.setCoordinate(Or, Oc);
 							return false;
 						}
-					board[r-1][c]=horse;
-					horse.setCoordinate(r-1, c);
-					board[r][c]=null;
+					} else
+						move(horse);
 				}
 			}
 			if(horse.getColor()==Color.GREEN) {
 				if((c==6&&((r<6)||(r>7&&r<14)))||(r==6&&c==0)) {
-					if(board[r+1][c] instanceof Horse)
+					if(board[r+1][c] instanceof Horse) {
 						if(board[r+1][c].getColor()!=Color.GREEN) {
 							System.out.println(board[r+1][c]+" have been kicked at ("+(r+1)+", "+c+")");
 							if(board[r+1][c].getColor()==Color.RED) {
 								JeuDesPetitsChevaux.r.add(board[r+1][c]);
 								JeuDesPetitsChevaux.R.remove(board[r+1][c]);
+								board[r+1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r+1, c);
 							}
 							if(board[r+1][c].getColor()==Color.BLUE) {
 								JeuDesPetitsChevaux.b.add(board[r+1][c]);
 								JeuDesPetitsChevaux.B.remove(board[r+1][c]);
+								board[r+1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r+1, c);
 							}
 							if(board[r+1][c].getColor()==Color.YELLOW) {
 								JeuDesPetitsChevaux.y.add(board[r+1][c]);
 								JeuDesPetitsChevaux.Y.remove(board[r+1][c]);
+								board[r+1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r+1, c);
 							}
 						} else {
 							System.out.println(horse+" can't move");
@@ -210,25 +251,33 @@ public class Board {
 							horse.setCoordinate(Or, Oc);
 							return false;
 						}
-					board[r+1][c]=horse;
-					horse.setCoordinate(r+1, c);
-					board[r][c]=null;
+					} else
+						move(horse);
 				}
 				if((((c<7&&c>0)||(c>8&&c<15))&&r==6)||(r==0&&c>6)) {
-					if(board[r][c-1] instanceof Horse)
+					if(board[r][c-1] instanceof Horse) {
 						if(board[r][c-1].getColor()!=Color.GREEN) {
 							System.out.println(board[r][c-1]+" have been kicked at ("+r+", "+(c-1)+")");
 							if(board[r][c-1].getColor()==Color.RED) {
 								JeuDesPetitsChevaux.r.add(board[r][c-1]);
 								JeuDesPetitsChevaux.R.remove(board[r][c-1]);
+								board[r][c-1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c-1);
 							}
 							if(board[r][c-1].getColor()==Color.YELLOW) {
 								JeuDesPetitsChevaux.y.add(board[r][c-1]);
 								JeuDesPetitsChevaux.Y.remove(board[r][c-1]);
+								board[r][c-1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c-1);
 							}
 							if(board[r][c-1].getColor()==Color.BLUE) {
 								JeuDesPetitsChevaux.b.add(board[r][c-1]);
 								JeuDesPetitsChevaux.B.remove(board[r][c-1]);
+								board[r][c-1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c-1);
 							}
 						} else {
 							System.out.println(horse+" can't move");
@@ -237,26 +286,34 @@ public class Board {
 							horse.setCoordinate(Or, Oc);
 							return false;
 						}
-					board[r][c-1]=horse;
-					horse.setCoordinate(r, c-1);
-					board[r][c]=null;
+					} else
+						move(horse);
 				}
 				
 				if(((c<6||(c>7&&c<14))&&r==8)||(r==14&&c<8)||r==7&&c<6) {
-					if(board[r][c+1] instanceof Horse)
+					if(board[r][c+1] instanceof Horse) {
 						if(board[r][c+1].getColor()!=Color.GREEN) {
 							System.out.println(board[r][c+1]+" have been kicked at ("+r+", "+(c+1)+")");
 							if(board[r][c+1].getColor()==Color.RED) {
 								JeuDesPetitsChevaux.r.add(board[r][c+1]);
 								JeuDesPetitsChevaux.R.remove(board[r][c+1]);
+								board[r][c+1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c+1);
 							}
 							if(board[r][c+1].getColor()==Color.YELLOW) {
 								JeuDesPetitsChevaux.y.add(board[r][c+1]);
 								JeuDesPetitsChevaux.Y.remove(board[r][c+1]);
+								board[r][c+1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c+1);
 							}
 							if(board[r][c+1].getColor()==Color.BLUE) {
 								JeuDesPetitsChevaux.b.add(board[r][c+1]);
 								JeuDesPetitsChevaux.B.remove(board[r][c+1]);
+								board[r][c+1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c+1);
 							}
 						} else {
 							System.out.println(horse+" can't move");
@@ -265,25 +322,33 @@ public class Board {
 							horse.setCoordinate(Or, Oc);
 							return false;
 						}
-					board[r][c+1]=horse;
-					horse.setCoordinate(r, c+1);
-					board[r][c]=null;
+					} else
+						move(horse);
 				}
 				if((c==8&&((r<15&&r>8)||(r>0&&r<7)))||(c==14&&r>6)) {
-					if(board[r-1][c] instanceof Horse)
+					if(board[r-1][c] instanceof Horse) {
 						if(board[r-1][c].getColor()!=Color.GREEN) {
 							System.out.println(board[r-1][c]+" have been kicked at ("+(r-1)+", "+c+")");
 							if(board[r-1][c].getColor()==Color.RED) {
 								JeuDesPetitsChevaux.r.add(board[r-1][c]);
 								JeuDesPetitsChevaux.R.remove(board[r-1][c]);
+								board[r-1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r-1, c);
 							}
 							if(board[r-1][c].getColor()==Color.YELLOW) {
 								JeuDesPetitsChevaux.y.add(board[r-1][c]);
 								JeuDesPetitsChevaux.Y.remove(board[r-1][c]);
+								board[r-1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r-1, c);
 							}
 							if(board[r-1][c].getColor()==Color.BLUE) {
 								JeuDesPetitsChevaux.b.add(board[r-1][c]);
 								JeuDesPetitsChevaux.B.remove(board[r-1][c]);
+								board[r-1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r-1, c);
 							}
 						} else {
 							System.out.println(horse+" can't move");
@@ -292,27 +357,35 @@ public class Board {
 							horse.setCoordinate(Or, Oc);
 							return false;
 						}
-					board[r-1][c]=horse;
-					horse.setCoordinate(r-1, c);
-					board[r][c]=null;
+					} else
+						move(horse);
 				}
 			}
 			if(horse.getColor()==Color.BLUE) {
 				if((c==6&&((r<6)||(r>7&&r<14)))||(r<8&&c==0)) {
-					if(board[r+1][c] instanceof Horse)
+					if(board[r+1][c] instanceof Horse) {
 						if(board[r+1][c].getColor()!=Color.BLUE) {
 							System.out.println(board[r+1][c]+" have been kicked at ("+(r+1)+", "+c+")");
 							if(board[r+1][c].getColor()==Color.RED) {
 								JeuDesPetitsChevaux.r.add(board[r+1][c]);
 								JeuDesPetitsChevaux.R.remove(board[r+1][c]);
+								board[r+1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r+1, c);
 							}
 							if(board[r+1][c].getColor()==Color.GREEN) {
 								JeuDesPetitsChevaux.g.add(board[r+1][c]);
 								JeuDesPetitsChevaux.G.remove(board[r+1][c]);
+								board[r+1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r+1, c);
 							}
 							if(board[r+1][c].getColor()==Color.YELLOW) {
 								JeuDesPetitsChevaux.y.add(board[r+1][c]);
 								JeuDesPetitsChevaux.Y.remove(board[r+1][c]);
+								board[r+1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r+1, c);
 							}
 						} else {
 							System.out.println(horse+" can't move");
@@ -321,25 +394,33 @@ public class Board {
 							horse.setCoordinate(Or, Oc);
 							return false;
 						}
-					board[r+1][c]=horse;
-					horse.setCoordinate(r+1, c);
-					board[r][c]=null;
+					} else
+						move(horse);
 				}
 				if((((c<7&&c>0)||(c>8&&c<15))&&r==6)||(r==0&&c>6)) {
-					if(board[r][c-1] instanceof Horse)
+					if(board[r][c-1] instanceof Horse) {
 						if(board[r][c-1].getColor()!=Color.BLUE) {
 							System.out.println(board[r][c-1]+" have been kicked at ("+r+", "+(c-1)+")");
 							if(board[r][c-1].getColor()==Color.GREEN) {
 								JeuDesPetitsChevaux.g.add(board[r][c-1]);
 								JeuDesPetitsChevaux.G.remove(board[r][c-1]);
+								board[r][c-1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c-1);
 							}
 							if(board[r][c-1].getColor()==Color.YELLOW) {
 								JeuDesPetitsChevaux.y.add(board[r][c-1]);
 								JeuDesPetitsChevaux.Y.remove(board[r][c-1]);
+								board[r][c-1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c-1);
 							}
 							if(board[r][c-1].getColor()==Color.RED) {
 								JeuDesPetitsChevaux.r.add(board[r][c-1]);
 								JeuDesPetitsChevaux.R.remove(board[r][c-1]);
+								board[r][c-1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c-1);
 							}
 						} else {
 							System.out.println(horse+" can't move");
@@ -348,26 +429,34 @@ public class Board {
 							horse.setCoordinate(Or, Oc);
 							return false;
 						}
-					board[r][c-1]=horse;
-					horse.setCoordinate(r, c-1);
-					board[r][c]=null;
+					} else
+						move(horse);
 				}
 				
 				if(((c<6||(c>7&&c<14))&&r==8)||(r==14&&c==6)) {
-					if(board[r][c+1] instanceof Horse)
+					if(board[r][c+1] instanceof Horse) {
 						if(board[r][c+1].getColor()!=Color.BLUE) {
 							System.out.println(board[r][c+1]+" have been kicked at ("+r+", "+(c+1)+")");
 							if(board[r][c+1].getColor()==Color.GREEN) {
 								JeuDesPetitsChevaux.g.add(board[r][c+1]);
 								JeuDesPetitsChevaux.G.remove(board[r][c+1]);
+								board[r][c+1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c+1);
 							}
 							if(board[r][c+1].getColor()==Color.YELLOW) {
 								JeuDesPetitsChevaux.y.add(board[r][c+1]);
 								JeuDesPetitsChevaux.Y.remove(board[r][c+1]);
+								board[r][c+1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c+1);
 							}
 							if(board[r][c+1].getColor()==Color.RED) {
 								JeuDesPetitsChevaux.r.add(board[r][c+1]);
 								JeuDesPetitsChevaux.R.remove(board[r][c+1]);
+								board[r][c+1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c+1);
 							}
 						} else {
 							System.out.println(horse+" can't move");
@@ -376,25 +465,33 @@ public class Board {
 							horse.setCoordinate(Or, Oc);
 							return false;
 						}
-					board[r][c+1]=horse;
-					horse.setCoordinate(r, c+1);
-					board[r][c]=null;
+					} else
+						move(horse);
 				}
 				if((c==8&&((r<15&&r>8)||(r>0&&r<7)))||(c==14&&r>6)||(c==7&&r>8)) {
-					if(board[r-1][c] instanceof Horse)
+					if(board[r-1][c] instanceof Horse) {
 						if(board[r-1][c].getColor()!=Color.BLUE) {
 							System.out.println(board[r-1][c]+" have been kicked at ("+(r-1)+", "+c+")");
 							if(board[r-1][c].getColor()==Color.GREEN) {
 								JeuDesPetitsChevaux.g.add(board[r-1][c]);
 								JeuDesPetitsChevaux.G.remove(board[r-1][c]);
+								board[r-1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r-1, c);
 							}
 							if(board[r-1][c].getColor()==Color.YELLOW) {
 								JeuDesPetitsChevaux.y.add(board[r-1][c]);
 								JeuDesPetitsChevaux.Y.remove(board[r-1][c]);
+								board[r-1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r-1, c);
 							}
 							if(board[r-1][c].getColor()==Color.RED) {
 								JeuDesPetitsChevaux.r.add(board[r-1][c]);
 								JeuDesPetitsChevaux.R.remove(board[r-1][c]);
+								board[r-1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r-1, c);
 							}
 						} else {
 							System.out.println(horse+" can't move");
@@ -403,27 +500,36 @@ public class Board {
 							horse.setCoordinate(Or, Oc);
 							return false;
 						}
-					board[r-1][c]=horse;
-					horse.setCoordinate(r-1, c);
-					board[r][c]=null;
+					} else
+						move(horse);
 				}
 			}
 			if(horse.getColor()==Color.YELLOW) {
 				if((c==6&&((r<6)||(r>7&&r<14))||(c==0&&r<8))) {
-					if(board[r+1][c] instanceof Horse)
+					if(board[r+1][c] instanceof Horse) {
 						if(board[r+1][c].getColor()!=Color.YELLOW) {
 							System.out.println(board[r+1][c]+" have been kicked at ("+(r+1)+", "+c+")");
 							if(board[r+1][c].getColor()==Color.RED) {
 								JeuDesPetitsChevaux.r.add(board[r+1][c]);
 								JeuDesPetitsChevaux.R.remove(board[r+1][c]);
+								board[r+1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r+1, c);
+								
 							}
 							if(board[r+1][c].getColor()==Color.BLUE) {
 								JeuDesPetitsChevaux.b.add(board[r+1][c]);
 								JeuDesPetitsChevaux.B.remove(board[r+1][c]);
+								board[r+1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r+1, c);
 							}
 							if(board[r+1][c].getColor()==Color.GREEN) {
 								JeuDesPetitsChevaux.g.add(board[r+1][c]);
 								JeuDesPetitsChevaux.G.remove(board[r+1][c]);
+								board[r+1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r+1, c);
 							}
 						} else {
 							System.out.println(horse+" can't move");
@@ -432,25 +538,33 @@ public class Board {
 							horse.setCoordinate(Or, Oc);
 							return false;
 						}
-					board[r+1][c]=horse;
-					horse.setCoordinate(r+1, c);
-					board[r][c]=null;
+					} else
+						move(horse);
 				}
 				if((((c<7&&c>0)||(c>8&&c<15))&&r==6)||(r==0&&c>6)||r==7&&c>8) {
-					if(board[r][c-1] instanceof Horse)
+					if(board[r][c-1] instanceof Horse) {
 						if(board[r][c-1].getColor()!=Color.YELLOW) {
 							System.out.println(board[r][c-1]+" have been kicked at ("+r+", "+(c-1)+")");
 							if(board[r][c-1].getColor()==Color.GREEN) {
 								JeuDesPetitsChevaux.g.add(board[r][c-1]);
 								JeuDesPetitsChevaux.G.remove(board[r][c-1]);
+								board[r][c-1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c-1);
 							}
 							if(board[r][c-1].getColor()==Color.RED) {
 								JeuDesPetitsChevaux.r.add(board[r][c-1]);
 								JeuDesPetitsChevaux.R.remove(board[r][c-1]);
+								board[r][c-1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c-1);
 							}
 							if(board[r][c-1].getColor()==Color.BLUE) {
 								JeuDesPetitsChevaux.b.add(board[r][c-1]);
 								JeuDesPetitsChevaux.B.remove(board[r][c-1]);
+								board[r][c-1]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r, c-1);
 							}
 						} else {
 							System.out.println(horse+" can't move");
@@ -459,13 +573,12 @@ public class Board {
 							horse.setCoordinate(Or, Oc);
 							return false;
 						}
-					board[r][c-1]=horse;
-					horse.setCoordinate(r, c-1);
-					board[r][c]=null;
+					} else
+						move(horse);
 				}
 					
 				if(((c<6||(c>7&&c<14))&&r==8)||(r==14&&c<8)) {
-					if(board[r][c+1] instanceof Horse)
+					if(board[r][c+1] instanceof Horse) {
 						if(board[r][c+1].getColor()!=Color.YELLOW) {
 							System.out.println(board[r][c+1]+" have been kicked at ("+r+", "+(c+1)+")");
 							if(board[r][c+1].getColor()==Color.GREEN) {
@@ -487,25 +600,33 @@ public class Board {
 							horse.setCoordinate(Or, Oc);
 							return false;
 						}
-					board[r][c+1]=horse;
-					horse.setCoordinate(r, c+1);
-					board[r][c]=null;
+					} else
+						move(horse);
 				}
 				if((c==8&&((r<15&&r>8)||(r>0&&r<7)))||(r==8&&c==14)) {
-					if(board[r-1][c] instanceof Horse)
+					if(board[r-1][c] instanceof Horse) {
 						if(board[r-1][c].getColor()!=Color.YELLOW) {
 							System.out.println(board[r-1][c]+" have been kicked at ("+(r-1)+", "+c+")");
 							if(board[r-1][c].getColor()==Color.GREEN) {
 								JeuDesPetitsChevaux.g.add(board[r-1][c]);
 								JeuDesPetitsChevaux.G.remove(board[r-1][c]);
+								board[r-1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r-1, c);
 							}
 							if(board[r-1][c].getColor()==Color.RED) {
 								JeuDesPetitsChevaux.r.add(board[r-1][c]);
 								JeuDesPetitsChevaux.R.remove(board[r-1][c]);
+								board[r-1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r-1, c);
 							}
 							if(board[r-1][c].getColor()==Color.BLUE) {
 								JeuDesPetitsChevaux.b.add(board[r-1][c]);
 								JeuDesPetitsChevaux.B.remove(board[r-1][c]);
+								board[r-1][c]=horse;
+								board[r][c]=null;
+								horse.setCoordinate(r-1, c);
 							}
 						} else {
 							System.out.println(horse+" can't move");
@@ -514,9 +635,8 @@ public class Board {
 							horse.setCoordinate(Or, Oc);
 							return false;
 						}
-					board[r-1][c]=horse;
-					horse.setCoordinate(r-1, c);
-					board[r][c]=null;
+					} else
+						move(horse);
 				}
 			}
 			System.out.println(horse+" move "+ dice+" step!");
